@@ -27,4 +27,4 @@ workflows:
   release-workflow:
     jobs:
       - release:
-        context: semantic-release
+          context: semantic-release
