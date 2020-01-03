@@ -49,19 +49,22 @@ module.exports = {
         },
       },
     ],
+    // publish release notes
     '@semantic-release/github',
-    [
-      '@semantic-release/git',
-      {
-        assets: ['package.json'],
-        message: 'Internal: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
-      },
-    ],
+    // publish to NPM
     [
       '@semantic-release/npm',
       {
         npmPublish: true,
         pkgRoot: '.',
+      },
+    ],
+    // commit the package.json
+    [
+      '@semantic-release/git',
+      {
+        assets: ['package.json'],
+        message: 'Internal: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
   ],
