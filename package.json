@@ -5,7 +5,6 @@
   "repository": "",
   "author": "Tripp Hammond <tripphamm@gmail.com>",
   "license": "UNLICENSED",
-  "private": true,
   "files": [
     "configs"
   ],
