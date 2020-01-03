@@ -6,7 +6,9 @@
   "author": "Tripp Hammond <tripphamm@gmail.com>",
   "license": "UNLICENSED",
   "files": [
-    "configs"
+    "configs",
+    "bin",
+    "utils"
   ],
   "bin": {
     "tk-validate-commit-message": "bin/validate-commit-message.js",
