@@ -1,0 +1,45 @@
+{
+  "name": "trippkit",
+  "version": "1.0.0",
+  "description": "Common configurations for js/ts projects",
+  "repository": "",
+  "author": "Tripp Hammond <tripphamm@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "files": [
+    "configs"
+  ],
+  "bin": {
+    "tk-validate-commit-message": "bin/validate-commit-message.js",
+    "tk-release": "bin/release.js",
+    "tk-format": "bin/format.js",
+    "tk-lint": "bin/lint.js"
+  },
+  "scripts": {
+    "release": "node ./bin/release.js",
+    "format": "node ./bin/format.js",
+    "lint": "node ./bin/lint.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
+    "babel-eslint": "^10.0.2",
+    "conventional-changelog-eslint": "^3.0.1",
+    "cross-spawn": "^7.0.1",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jest": "^23.2.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": "^3.0.0",
+    "lint-staged": "^9.1.0",
+    "prettier": "^1.18.2",
+    "semantic-release": "^15.14.0",
+    "typescript": "^3.5.1"
+  }
+}
