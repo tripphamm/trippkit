@@ -28,3 +28,6 @@ workflows:
     jobs:
       - release:
           context: semantic-release
+          filters:
+            branches:
+              only: master
