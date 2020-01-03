@@ -1,9 +1,4 @@
-workflows:
-  version: 2
-  release:
-    jobs:
-      - release
-          context: semantic-release
+version: 2
 jobs:
   release:
     docker:
@@ -27,3 +22,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn release
+workflows:
+  version: 2
+  release-workflow:
+    jobs:
+      - release
+        context: semantic-release
