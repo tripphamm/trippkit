@@ -2,6 +2,8 @@
 
 Common configurations and scripts for my js/ts projects
 
+> Disclaimer: This is really only built for personal use. I suggest forking and using it as inspiration if you like what's going on. I make no guarantees about breaking changes etc.
+
 ## Install
 
 ```bash
