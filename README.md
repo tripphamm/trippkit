@@ -14,7 +14,7 @@ yarn add -D trippkit
 
 We enforce a commit-message convention so that we can automatically create releases with nice release notes and deterministic version-bumps.
 
-For simplicity, there are only 4 types of commits which correspond directly to the type of version-bump that would be required.
+For simplicity, there are only 4 types of commits and they correspond directly to the type of version-bump that would be required.
 
 - Internal - some internal change that has no bearing on the exported artifacts / app (no version bump, no release)
 - Fix - a non-breaking bug fix (patch version bump, release)
@@ -42,10 +42,9 @@ module.exports = {
   extends: [
     require.resolve('trippkit/configs/eslint-config-react'),
     // or
-    require.resolve('trippkit/configs/eslint-config-node)
+    require.resolve('trippkit/configs/eslint-config-node'),
   ],
 };
-
 ```
 
 ```json
@@ -87,7 +86,7 @@ module.exports = require('trippkit/configs/prettier');
 Configure the editor to use the proper formatting by default
 
 There's no way to "extend" an EditorConfig, so just copy/paste this content into a file called `.editorconfig`
-(https://github.com/editorconfig/editorconfig/issues/236)
+[Issue](https://github.com/editorconfig/editorconfig/issues/236)
 
 ```txt
 root = true
@@ -109,10 +108,22 @@ Configure automated releases based on commit message
 
 #### Env
 
-Requires `GITHUB_TOKEN` and `NPM_TOKEN` env variables. You can add a `.env` file at the root of your project (remember to .gitignore!) if you want to publish locally. The env vars must be defined in the CI environment if you want CI to release.
+The release process:
+
+1. Analyze commits to determine the next version number
+2. Write new version number to package.json
+3. Commit the version bump and tag that commit with the version
+4. Push that commit to GitHub
+5. Generate release notes based on the commit messages
+6. Publish the release notes on GitHub
+7. Publish the library on NPM
+
+In order for this to work, we need write-access to GitHub and NPM. Therefore, `GITHUB_TOKEN` and `NPM_TOKEN` env variables must be defined in order for the release to work. You can add a `.env` file at the root of your project (remember to .gitignore!) if you want to publish locally. The env vars must be defined in the CI environment if you want CI to release.
 
 ```
 // .env
+
+// don't forget to .gitignore this file!
 
 GITHUB_TOKEN = abcdefghijklmnopqrstuvwxyz
 NPM_TOKEN = abcdefghijklmnopqrstuvwxyz
@@ -128,7 +139,7 @@ module.exports = require('trippkit/configs/semantic-release');
 
 #### Script
 
-In the package.json, add a script that builds, tests, and then calls `tk-release`
+In the package.json, you can call `tk-release` in order to kick off the release process
 
 ```json
 // package.json
@@ -151,7 +162,7 @@ Enables us to run our auto-formatter and linter on staged files
 ```js
 // lint-staged.config.js
 
-module.exports = require('trippkit/configs/lint-staged)
+module.exports = require('trippkit/configs/lint-staged');
 ```
 
 ## Husky
