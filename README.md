@@ -16,14 +16,14 @@ We enforce a commit-message convention so that we can automatically create relea
 
 For simplicity, there are only 4 types of commits and they correspond directly to the type of version-bump that would be required.
 
-- Internal - some internal change that has no bearing on the exported artifacts / app (no version bump, no release)
+- Chore - some internal change that has no bearing on the exported artifacts / app (no version bump, no release)
 - Fix - a non-breaking bug fix (patch version bump, release)
 - New - a non-breaking new feature (minor version bump, release)
 - Breaking - a breaking change (major version bump, release)
 
 e.g.
 
-> Internal: Update readme
+> Chore: Update readme
 
 > Fix: Check for null before executing logic
 
