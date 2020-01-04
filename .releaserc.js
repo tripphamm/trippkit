@@ -4,15 +4,6 @@ module.exports = {
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
-    // publish release notes
     '@semantic-release/github',
-    // commit the package.json
-    [
-      '@semantic-release/git',
-      {
-        assets: ['package.json'],
-        message: 'Chore: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
-      },
-    ],
   ],
 };
