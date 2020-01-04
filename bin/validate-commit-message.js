@@ -10,9 +10,6 @@ const { readFileSync, existsSync } = require('fs');
 const chalk = require('chalk');
 const { commitTypes } = require('../configs/commit-types');
 
-console.log(process.cwd());
-console.log(process.argv);
-
 let commitMessage;
 if (process.argv.length >= 3) {
   commitMessage = process.argv[2];
