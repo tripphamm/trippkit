@@ -10,7 +10,7 @@
   "scripts": {
     "dogfood": "yarn install --force",
     "lint": "lerna exec -- yarn lint",
-    "release": "tk-release && lerna publish"
+    "release": "tk-release && lerna publish --yes --message \"Chore: Release\""
   },
   "workspaces": [
     "packages/*"
