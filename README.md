@@ -134,7 +134,7 @@ NPM_TOKEN = abcdefghijklmnopqrstuvwxyz
 #### Config
 
 ```js
-// release.config.js
+// .releaserc.js
 
 module.exports = require('@tripphamm/trippkit/configs/semantic-release');
 ```
