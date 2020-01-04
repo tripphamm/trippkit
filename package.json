@@ -10,7 +10,7 @@
   "scripts": {
     "dogfood": "yarn install --force",
     "lint": "lerna exec -- yarn lint",
-    "release": "lerna exec -- yarn release"
+    "release": "semantic-release && lerna publish"
   },
   "workspaces": [
     "packages/*"

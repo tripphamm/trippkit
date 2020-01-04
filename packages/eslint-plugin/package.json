@@ -14,8 +14,7 @@
   "main": "index.js",
   "scripts": {
     "dogfood": "yarn install --force",
-    "lint": "tk-lint",
-    "release": "tk-release"
+    "lint": "tk-lint"
   },
   "keywords": [
     "eslint",

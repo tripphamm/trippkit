@@ -20,7 +20,6 @@
     "tk-lint": "bin/lint.js"
   },
   "scripts": {
-    "release": "node ./bin/release.js",
     "format": "node ./bin/format.js",
     "lint": "node ./bin/lint.js"
   },
