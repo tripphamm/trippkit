@@ -1,6 +1,3 @@
 module.exports = {
-  extends: ['./configs/eslint-config-node.js'],
-  parserOptions: {
-    sourceType: 'script',
-  },
+  extends: ['plugin:@tripphamm/base', 'plugin:@tripphamm/node'],
 };

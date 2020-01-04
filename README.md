@@ -40,9 +40,11 @@ Enforce code quality best-practices
 
 module.exports = {
   extends: [
-    require.resolve('@tripphamm/trippkit/configs/eslint-config-react'),
-    // or
-    require.resolve('@tripphamm/trippkit/configs/eslint-config-node'),
+    // extend the base
+    'plugin:@tripphamm/base',
+    // extend react or node
+    'plugin:@tripphamm/react',
+    'plugin:@tripphamm/node',
   ],
 };
 ```

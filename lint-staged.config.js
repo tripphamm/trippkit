@@ -1,1 +1,1 @@
-module.exports = require('./configs/lint-staged');
+module.exports = require('@tripphamm/trippkit/configs/lint-staged');

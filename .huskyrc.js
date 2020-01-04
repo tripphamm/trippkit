@@ -1,6 +1,1 @@
-module.exports = {
-  hooks: {
-    'commit-msg': 'node ./bin/validate-commit-message',
-    'pre-commit': 'lint-staged',
-  },
-};
+module.exports = require('@tripphamm/trippkit/configs/husky');

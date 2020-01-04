@@ -19,8 +19,6 @@ module.exports = {
     'plugin:import/warnings',
     // extends import-linting with support for TypeScript imports
     'plugin:import/typescript',
-    // adds linting for jest
-    'plugin:jest/recommended',
     // extends the prettier config (disables base eslint rules so they don't conflict with prettier)
     // enables the prettier plugin (enables eslint detecting prettier errors)
     // sets the "prettier/prettier" rule to "error" (enables red-highlighting of prettier errors)
@@ -31,9 +29,8 @@ module.exports = {
   rules: {
     // allow console.log to notify users about errors
     'no-console': 'off',
-    // tries to type-check the first arg for `describe` but doesn't allow string-typed variables :eye_roll:
-    // let's leave the type-checking to TypeScript
-    'jest/valid-describe': 'off',
+    // throws false positives when used with typescript
+    'no-unused-vars': 'off',
     // allow typescript to infer return type of function
     '@typescript-eslint/explicit-function-return-type': 'off',
     // do not require marking class methods with 'public'/'private'
@@ -45,12 +42,24 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts', '*.tsx'],
+      files: ['*.js', '*.jsx'],
       rules: {
-        // throws false positives when used with typescript
-        'no-unused-vars': 'off',
-        // allow `require` imports since some of this repo uses node scrips
-        '@typescript-eslint/no-var-requires': 'off',
+        'no-unused-vars': 'warn',
+      },
+    },
+    {
+      files: ['*.spec.js', '*.spec.ts', '*.spec.jsx', '*.spec.tsx'],
+      env: {
+        'jest/globals': true,
+      },
+      extends: [
+        // adds linting for jest
+        'plugin:jest/recommended',
+      ],
+      rules: {
+        // tries to type-check the first arg for `describe` but doesn't allow string-typed variables :eye_roll:
+        // let's leave the type-checking to TypeScript
+        'jest/valid-describe': 'off',
       },
     },
     {
@@ -58,6 +67,10 @@ module.exports = {
       files: ['scripts/**/*'],
       env: {
         node: true,
+      },
+      rules: {
+        // allow `require` imports
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],
