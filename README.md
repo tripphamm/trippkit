@@ -7,7 +7,7 @@ Common configurations and scripts for my js/ts projects
 ## Install
 
 ```bash
-yarn add -D trippkit
+yarn add -D @tripphamm/trippkit
 ```
 
 ## Commit Message Convention
@@ -40,9 +40,9 @@ Enforce code quality best-practices
 
 module.exports = {
   extends: [
-    require.resolve('trippkit/configs/eslint-config-react'),
+    require.resolve('@tripphamm/trippkit/configs/eslint-config-react'),
     // or
-    require.resolve('trippkit/configs/eslint-config-node'),
+    require.resolve('@tripphamm/trippkit/configs/eslint-config-node'),
   ],
 };
 ```
@@ -66,7 +66,7 @@ Enable automatic code formatting
 ```js
 // .prettierrc.js
 
-module.exports = require('trippkit/configs/prettier');
+module.exports = require('@tripphamm/trippkit/configs/prettier');
 ```
 
 ```json
@@ -134,7 +134,7 @@ NPM_TOKEN = abcdefghijklmnopqrstuvwxyz
 ```js
 // release.config.js
 
-module.exports = require('trippkit/configs/semantic-release');
+module.exports = require('@tripphamm/trippkit/configs/semantic-release');
 ```
 
 #### Script
@@ -162,7 +162,7 @@ Enables us to run our auto-formatter and linter on staged files
 ```js
 // lint-staged.config.js
 
-module.exports = require('trippkit/configs/lint-staged');
+module.exports = require('@tripphamm/trippkit/configs/lint-staged');
 ```
 
 ## Husky
@@ -172,5 +172,5 @@ Runs the auto-formatter and linter on staged files before commits. Also validate
 ```js
 //.huskyrc.js
 
-module.exports = require('trippkit/configs/husky');
+module.exports = require('@tripphamm/trippkit/configs/husky');
 ```
