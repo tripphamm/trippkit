@@ -7,10 +7,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "index.js",
+    "configs"
+  ],
   "main": "index.js",
   "scripts": {
     "dogfood": "yarn install --force",
-    "lint": "tk-lint"
+    "lint": "tk-lint",
+    "release": "tk-release"
   },
   "keywords": [
     "eslint",
