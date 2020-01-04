@@ -8,7 +8,7 @@ const RELEASE_TYPE = {
 const COMMIT_TYPE = {
   BREAKING: 'Breaking',
   FIX: 'Fix',
-  INTERNAL: 'Internal',
+  CHORE: 'Chore',
   NEW: 'New',
 };
 
@@ -16,7 +16,7 @@ module.exports = {
   RELEASE_TYPE,
   COMMIT_TYPE,
   commitTypes: {
-    [COMMIT_TYPE.INTERNAL]: {
+    [COMMIT_TYPE.CHORE]: {
       description: 'A not-user-facing change (e.g. tests, dev deps, tooling)',
       releaseType: RELEASE_TYPE.NONE,
     },
