@@ -1,6 +1,6 @@
 {
   "name": "@tripphamm/trippkit",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "author": "Tripp Hammond <tripphamm@gmail.com>",
   "description": "Common configurations for js/ts projects",
   "repository": "https://github.com/tripphamm/trippkit",
