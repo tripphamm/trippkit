@@ -28,7 +28,6 @@ if (process.argv.length >= 3) {
   commitMessage = readFileSync(gitCommitMessageFileLocation, 'utf8');
 }
 
-console.log('commit', commitMessage);
 const commitMessageMatch = /(.+?)(?:\((.+?)\))?: (.+)/.exec(commitMessage);
 
 if (commitMessageMatch !== null) {
