@@ -18,7 +18,8 @@ const spawnOpts = {
 };
 
 if (env['CI'] === 'true') {
-  console.log('CI Environment detected');
+  spawn.sync('git', ['config', 'user.name', 'CI User'], spawnOpts);
+  spawn.sync('git', ['config', 'user.email', 'robot@ci.com'], spawnOpts);
 
   // we need a .npmrc file which references the NPM_TOKEN env var
   // note that this isn't actually embedding the token itself into the file, just the literal string "${NPM_TOKEN}"
@@ -28,8 +29,6 @@ if (env['CI'] === 'true') {
     fs.writeFileSync('./.npmrc', '//registry.npmjs.org/:_authToken=${NPM_TOKEN}', {
       encoding: 'utf8',
     });
-
-    console.log('Created .npmrc');
   } catch (error) {
     console.error(error);
 
