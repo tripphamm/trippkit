@@ -1,22 +1,12 @@
 {
   "npmClient": "yarn",
   "workspaces": true,
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "1.4.6",
   "command": {
     "publish": {
-      "allowBranch": [
-        "master"
-      ],
-      "message": "Chore: Release %s"
-    },
-    "version": {
-      "allowBranch": [
-        "master"
-      ],
-      "message": "Chore: Release %s"
+      "allowBranch": ["master"],
+      "message": "Chore: Release %s [skip ci]"
     }
   }
 }
