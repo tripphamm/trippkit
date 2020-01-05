@@ -14,9 +14,7 @@ const spawnOpts = {
   stdio: 'inherit',
 };
 
-console.log(env['CI'], typeof env['CI']);
-
-if (env['CI'] === true) {
+if (env['CI'] === 'true') {
   console.log('CI Environment detected');
 
   // in CI we need to embed our github token into the origin url so that we can push a commit
