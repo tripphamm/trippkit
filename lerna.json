@@ -5,7 +5,12 @@
   "version": "1.4.5",
   "command": {
     "publish": {
-      "allowBranch": ["master"]
+      "allowBranch": ["master"],
+      "message": "Chore: Release %s"
+    },
+    "version": {
+      "allowBranch": ["master"],
+      "message": "Chore: Release %s"
     }
   }
 }
