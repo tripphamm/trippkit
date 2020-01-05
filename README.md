@@ -6,11 +6,26 @@ Common configurations and scripts for my js/ts projects
 
 ## Install
 
-```bash
+```
 yarn add -D @tripphamm/trippkit
 ```
 
-## Commit Message Convention
+Auto-generate all config files:
+
+```
+yarn run tk-bootstrap
+```
+
+In the future there will be a cute little CLI for selecting options. For now, you'll need to make a couple manual changes after bootstrapping.
+
+- if any configs or package.json scripts already existed, we didn't overwrite them. For the configs, we produced a config with .tk at the end and for the package.json scripts we prefixed the script name with `tk-`. Take a look at your own versions and compare them to the `tk` versions and then delete one of them.
+- we added both `node` and `react` eslint configs; open up `.eslintrc.js` and remove whichever one isn't appropriate.
+- we assumed that you wanted to publish to NPM so we added a `release` script, a `.releaserc.js`, and a `.circleci/config.yml`; remove all 3 if you're not shipping to NPM
+- if you _are_ shipping to NPM, head over to CircleCI and enable the project
+
+## What's in the box
+
+### Commit Message Convention
 
 We enforce a commit-message convention so that we can automatically create releases with nice release notes and deterministic version-bumps.
 
@@ -31,7 +46,7 @@ e.g.
 
 > Breaking: Remove bad API, add new API
 
-## Eslint
+### Eslint
 
 Enforce code quality best-practices
 
@@ -61,7 +76,7 @@ module.exports = {
 }
 ```
 
-## Prettier
+### Prettier
 
 Enable automatic code formatting
 
@@ -83,7 +98,7 @@ module.exports = require('@tripphamm/trippkit/configs/prettier');
 }
 ```
 
-## EditorConfig
+### EditorConfig
 
 Configure the editor to use the proper formatting by default
 
@@ -102,13 +117,13 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 ```
 
-## Semantic Release
+### Semantic Release
 
 Configure automated releases based on commit message
 
-### Setup
+#### Setup
 
-#### Env
+##### Env
 
 The release process:
 
@@ -131,7 +146,7 @@ GITHUB_TOKEN = abcdefghijklmnopqrstuvwxyz
 NPM_TOKEN = abcdefghijklmnopqrstuvwxyz
 ```
 
-#### Config
+##### Config
 
 ```js
 // .releaserc.js
@@ -139,7 +154,7 @@ NPM_TOKEN = abcdefghijklmnopqrstuvwxyz
 module.exports = require('@tripphamm/trippkit/configs/semantic-release');
 ```
 
-#### Script
+##### Script
 
 In the package.json, you can call `tk-release` in order to kick off the release process
 
@@ -157,7 +172,7 @@ In the package.json, you can call `tk-release` in order to kick off the release 
 }
 ```
 
-## Lint-Staged
+### Lint-Staged
 
 Enables us to run our auto-formatter and linter on staged files
 
@@ -167,7 +182,7 @@ Enables us to run our auto-formatter and linter on staged files
 module.exports = require('@tripphamm/trippkit/configs/lint-staged');
 ```
 
-## Husky
+### Husky
 
 Runs the auto-formatter and linter on staged files before commits. Also validates that the commit follows our commit message convention
 

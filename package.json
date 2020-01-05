@@ -17,7 +17,8 @@
     "tk-validate-commit-message": "bin/validate-commit-message.js",
     "tk-release": "bin/release.js",
     "tk-format": "bin/format.js",
-    "tk-lint": "bin/lint.js"
+    "tk-lint": "bin/lint.js",
+    "tk-bootstrap": "bin/bootstrap.js"
   },
   "scripts": {
     "format": "node ./bin/format.js",
