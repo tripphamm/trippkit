@@ -38,7 +38,7 @@ if (env['CI'] === 'true') {
 
     const gitSetOriginResult = spawn.sync(
       'git',
-      ['remote', 'set-origin', authenticatedGitOrigin],
+      ['remote', 'set-url', 'origin', authenticatedGitOrigin],
       spawnOpts,
     );
 
