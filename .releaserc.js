@@ -1,1 +1,1 @@
-module.exports = require('@tripphamm/trippkit/configs/semantic-release');
+module.exports = require('./configs/semantic-release');

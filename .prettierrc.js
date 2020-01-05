@@ -1,1 +1,1 @@
-module.exports = require('@tripphamm/trippkit/configs/prettier');
+module.exports = require('./configs/prettier');

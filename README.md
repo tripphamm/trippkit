@@ -35,13 +35,13 @@ e.g.
 
 Enforce code quality best-practices
 
+Depending on the project, extend `react` or `node`.
+
 ```js
 // .eslintrc.js
 
 module.exports = {
   extends: [
-    'plugin:@tripphamm/base',
-    // or
     'plugin:@tripphamm/react',
     // or
     'plugin:@tripphamm/node',
