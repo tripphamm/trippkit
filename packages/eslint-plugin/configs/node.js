@@ -2,7 +2,7 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ['./base'],
+  extends: [require.resolve('./base.js')],
   rules: {
     // allow `require` imports
     '@typescript-eslint/no-var-requires': 'off',
