@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "The monorepo for trippkit projects",
   "main": "index.js",
-  "repository": "https://github.com/tripphamm/trippkit.git",
+  "repository": "https://github.com/tripphamm/trippkit",
   "author": "Tripp Hammond <tripphamm@gmail.com>",
   "license": "MIT",
   "private": true,
