@@ -21,7 +21,8 @@
   },
   "scripts": {
     "format": "node ./bin/format.js",
-    "lint": "node ./bin/lint.js"
+    "lint": "node ./bin/lint.js",
+    "release": "node ./bin/release.js"
   },
   "dependencies": {
     "@babel/core": "^7.5.0",
@@ -50,8 +51,5 @@
     "prettier": "^1.18.2",
     "semantic-release": "^15.14.0",
     "typescript": "^3.5.1"
-  },
-  "devDependencies": {
-    "lerna": "^3.20.2"
   }
 }
