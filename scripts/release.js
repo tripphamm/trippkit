@@ -14,7 +14,11 @@ const spawnOpts = {
   stdio: 'inherit',
 };
 
+console.log(env['CI'], typeof env['CI']);
+
 if (env['CI'] === true) {
+  console.log('CI Environment detected');
+
   // in CI we need to embed our github token into the origin url so that we can push a commit
   const repository = require('./package.json').repository;
 
@@ -43,6 +47,8 @@ if (env['CI'] === true) {
     process.exit(gitSetOriginResult.status);
   }
 
+  console.log('Set origin to: ', authenticatedGitOrigin);
+
   // we need a .npmrc file which references the NPM_TOKEN env var
   // note that this isn't actually embedding the token itself into the file, just the literal string "${NPM_TOKEN}"
   // we _could_ just commit this file to the repo, but that would require devs to have NPM_TOKEN defined on their system
@@ -51,6 +57,8 @@ if (env['CI'] === true) {
     fs.writeFileSync('./.npmrc', '//registry.npmjs.org/:_authToken=${NPM_TOKEN}', {
       encoding: 'utf8',
     });
+
+    console.log('Created .npmrc');
   } catch (error) {
     console.error(error);
 
@@ -65,6 +73,8 @@ const semanticReleaseResult = spawn.sync('semantic-release', ['--ci', 'false'], 
 if (semanticReleaseResult.status !== 0) {
   process.exit(semanticReleaseResult.status);
 }
+
+console.log('Finished semantic release');
 
 // semantic-release should have tagged the latest commit with the new version
 // we'll use git to grab that tag in order to figure out the proper version to use
@@ -88,6 +98,8 @@ if (/^v\d+\.\d+\.\d+$/.test(version) === false) {
 // remove the "v"
 const versionNumber = version.slice(1);
 
+console.log('Found tag for version', version);
+
 const lernaVersionResult = spawn.sync(
   'lerna',
   [
@@ -106,6 +118,10 @@ if (lernaVersionResult.status !== 0) {
   process.exit(lernaVersionResult.status);
 }
 
+console.log('lerna version updated each package');
+
+spawn.sync('git', ['status'], spawnOpts);
+
 const lernaPublishResult = spawn.sync(
   'lerna',
   ['publish', 'from-package', '--yes', '--message', `Chore: Release ${version} [skip ci]`],
@@ -115,3 +131,5 @@ const lernaPublishResult = spawn.sync(
 if (lernaPublishResult.status !== 0) {
   process.exit(lernaPublishResult.status);
 }
+
+console.log('Done');
