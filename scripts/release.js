@@ -38,7 +38,7 @@ if (env['CI'] === 'true') {
 
 const lernaPublishResult = spawn.sync(
   'lerna',
-  ['publish', '--yes', '--conventional-commits', '--changelog-preset', 'eslint'],
+  ['publish', '--yes', '--conventional-commits', '--changelog-preset', 'eslint', '--verbose'],
   spawnOpts,
 );
 
