@@ -43,7 +43,11 @@ if (/^v\d+\.\d+\.\d+$/.test(version) === false) {
 // remove the "v"
 const versionNumber = version.slice(1);
 
-const lernaVersionResult = spawn.sync('lerna', ['version', versionNumber], spawnOpts);
+const lernaVersionResult = spawn.sync(
+  'lerna',
+  ['version', versionNumber, '--yes', '--message', 'Chore: Release'],
+  spawnOpts,
+);
 
 if (lernaVersionResult.status !== 0) {
   process.exit(lernaVersionResult.status);
@@ -51,7 +55,7 @@ if (lernaVersionResult.status !== 0) {
 
 const lernaPublishResult = spawn.sync(
   'lerna',
-  ['publish', '--yes', '--message', 'Chore: Release', '--from-package'],
+  ['publish', 'from-package', '--yes', '--message', 'Chore: Release'],
   env,
 );
 
