@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const spawn = require('cross-spawn');
+const fs = require('fs');
 const localEnv = require('@tripphamm/trippkit/utils/env');
 
 const env = localEnv.read();
@@ -13,8 +14,8 @@ const spawnOpts = {
   stdio: 'inherit',
 };
 
-// in CI we need to embed our github token into the origin url so that we can push a commit
 if (env['CI'] === true) {
+  // in CI we need to embed our github token into the origin url so that we can push a commit
   const repository = require('./package.json').repository;
 
   // we need to inject the auth info after the prefix and before the rest
@@ -40,6 +41,20 @@ if (env['CI'] === true) {
 
   if (gitSetOriginResult.status !== 0) {
     process.exit(gitSetOriginResult.status);
+  }
+
+  // we need a .npmrc file which references the NPM_TOKEN env var
+  // note that this isn't actually embedding the token itself into the file, just the literal string "${NPM_TOKEN}"
+  // we _could_ just commit this file to the repo, but that would require devs to have NPM_TOKEN defined on their system
+  // and we don't want to require that
+  try {
+    fs.writeFileSync('./.npmrc', '//registry.npmjs.org/:_authToken=${NPM_TOKEN}', {
+      encoding: 'utf8',
+    });
+  } catch (error) {
+    console.error(error);
+
+    process.exit(1);
   }
 }
 
