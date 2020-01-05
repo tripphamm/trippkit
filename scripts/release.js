@@ -17,35 +17,41 @@ const spawnOpts = {
 if (env['CI'] === 'true') {
   console.log('CI Environment detected');
 
-  // in CI we need to embed our github token into the origin url so that we can push a commit
-  const repository = require('./package.json').repository;
+  try {
+    // in CI we need to embed our github token into the origin url so that we can push a commit
+    const { repository } = JSON.parse(fs.readFileSync('./package.json', { encoding: 'utf8' }));
 
-  // we need to inject the auth info after the prefix and before the rest
+    // we need to inject the auth info after the prefix and before the rest
 
-  const prefix = 'https://';
+    const prefix = 'https://';
 
-  if (!repository.startsWith(prefix)) {
-    console.error(`Expected repository to start with ${prefix}. Got,`, repository);
+    if (!repository.startsWith(prefix)) {
+      console.error(`Expected repository to start with ${prefix}. Got,`, repository);
+      process.exit(1);
+    }
+
+    const authenticatedGitOrigin = [
+      repository.slice(0, prefix.length),
+      `tripphamm:${env['GITHUB_TOKEN']}@`,
+      repository.slice(prefix.length),
+    ].join('');
+
+    const gitSetOriginResult = spawn.sync(
+      'git',
+      ['remote', 'set-origin', authenticatedGitOrigin],
+      spawnOpts,
+    );
+
+    if (gitSetOriginResult.status !== 0) {
+      process.exit(gitSetOriginResult.status);
+    }
+
+    console.log('Set origin to: ', authenticatedGitOrigin);
+  } catch (error) {
+    console.error(error);
+
     process.exit(1);
   }
-
-  const authenticatedGitOrigin = [
-    repository.slice(0, prefix.length),
-    `tripphamm:${env['GITHUB_TOKEN']}@`,
-    repository.slice(prefix.length),
-  ].join('');
-
-  const gitSetOriginResult = spawn.sync(
-    'git',
-    ['remote', 'set-origin', authenticatedGitOrigin],
-    spawnOpts,
-  );
-
-  if (gitSetOriginResult.status !== 0) {
-    process.exit(gitSetOriginResult.status);
-  }
-
-  console.log('Set origin to: ', authenticatedGitOrigin);
 
   // we need a .npmrc file which references the NPM_TOKEN env var
   // note that this isn't actually embedding the token itself into the file, just the literal string "${NPM_TOKEN}"
