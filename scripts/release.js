@@ -13,6 +13,36 @@ const spawnOpts = {
   stdio: 'inherit',
 };
 
+// in CI we need to embed our github token into the origin url so that we can push a commit
+if (env['CI'] === true) {
+  const repository = require('./package.json').repository;
+
+  // we need to inject the auth info after the prefix and before the rest
+
+  const prefix = 'https://';
+
+  if (!repository.startsWith(prefix)) {
+    console.error(`Expected repository to start with ${prefix}. Got,`, repository);
+    process.exit(1);
+  }
+
+  const authenticatedGitOrigin = [
+    repository.slice(0, prefix.length),
+    `tripphamm:${env['GITHUB_TOKEN']}@`,
+    repository.slice(prefix.length),
+  ].join('');
+
+  const gitSetOriginResult = spawn.sync(
+    'git',
+    ['remote', 'set-origin', authenticatedGitOrigin],
+    spawnOpts,
+  );
+
+  if (gitSetOriginResult.status !== 0) {
+    process.exit(gitSetOriginResult.status);
+  }
+}
+
 // // --ci false skips the only-ci check
 // // this allows us to execute the release locally if we want
 const semanticReleaseResult = spawn.sync('semantic-release', ['--ci', 'false'], spawnOpts);
@@ -63,8 +93,8 @@ if (lernaVersionResult.status !== 0) {
 
 const lernaPublishResult = spawn.sync(
   'lerna',
-  ['publish', 'from-package', '--yes', '--message', 'Chore: Release'],
-  env,
+  ['publish', 'from-package', '--yes', '--message', `Chore: Release ${version} [skip ci]`],
+  spawnOpts,
 );
 
 if (lernaPublishResult.status !== 0) {
