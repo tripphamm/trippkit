@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dogfood": "yarn install --force",
-    "lint": "lerna exec -- yarn lint",
+    "lint": "tk-lint",
     "release": "node ./scripts/release.js"
   },
   "workspaces": [
@@ -17,11 +17,11 @@
   ],
   "devDependencies": {
     "@tripphamm/eslint-plugin": "./packages/eslint-plugin",
-    "@tripphamm/trippkit": "./packages/trippkit",
-    "lerna": "^3.20.2"
+    "@tripphamm/trippkit": "./packages/trippkit"
   },
   "dependencies": {
     "prettier": "^1.19.1",
+    "semantic-release-monorepo": "^6.1.1",
     "typescript": "^3.7.4"
   }
 }
