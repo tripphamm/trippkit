@@ -45,7 +45,15 @@ const versionNumber = version.slice(1);
 
 const lernaVersionResult = spawn.sync(
   'lerna',
-  ['version', versionNumber, '--yes', '--message', 'Chore: Release'],
+  [
+    'version',
+    versionNumber,
+    '--yes',
+    '--message',
+    'Chore: Release',
+    '--tag-version-prefix',
+    'lerna-v',
+  ],
   spawnOpts,
 );
 
