@@ -40,10 +40,10 @@ Enforce code quality best-practices
 
 module.exports = {
   extends: [
-    // extend the base
     'plugin:@tripphamm/base',
-    // extend react or node
+    // or
     'plugin:@tripphamm/react',
+    // or
     'plugin:@tripphamm/node',
   ],
 };

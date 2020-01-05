@@ -8,6 +8,7 @@ module.exports = {
     browser: true,
   },
   extends: [
+    './base',
     // adds linting for react
     'plugin:react/recommended',
     // disable linting rules from react
