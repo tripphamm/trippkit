@@ -1,6 +1,6 @@
 module.exports = {
   hooks: {
-    'commit-msg': 'jskit-validate-commit-message',
+    'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS',
     'pre-commit': 'lint-staged',
   },
 };

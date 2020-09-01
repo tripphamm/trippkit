@@ -14,7 +14,6 @@
     "utils"
   ],
   "bin": {
-    "jskit-validate-commit-message": "bin/validate-commit-message.js",
     "jskit-release": "bin/release.js",
     "jskit-format": "bin/format.js",
     "jskit-lint": "bin/lint.js",
@@ -27,6 +26,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.5.0",
+    "@commitlint/cli": "^9.1.2",
     "@ejhammond/eslint-plugin": "^1.0.0",
     "@semantic-release/commit-analyzer": "^6.3.3",
     "@semantic-release/git": "^7.0.18",
