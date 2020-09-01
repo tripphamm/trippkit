@@ -25,7 +25,6 @@
     "release": "node ./bin/release.js"
   },
   "dependencies": {
-    "@babel/core": "^7.5.0",
     "@commitlint/cli": "^9.1.2",
     "@ejhammond/eslint-plugin": "^1.0.0",
     "@semantic-release/commit-analyzer": "^6.3.3",
@@ -35,7 +34,6 @@
     "@semantic-release/release-notes-generator": "^7.3.5",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
-    "babel-eslint": "^10.0.2",
     "conventional-changelog-eslint": "^3.0.4",
     "cross-spawn": "^7.0.1",
     "dotenv": "^8.2.0",
