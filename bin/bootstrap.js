@@ -7,7 +7,7 @@ const { format } = require('prettier');
 const prettierConfig = require('../configs/prettier');
 
 function formatWithParser(content, parser) {
-  return format(content, { ...prettierConfig, parser: '' });
+  return format(content, { ...prettierConfig, parser });
 }
 function formatJS(js) {
   return formatWithParser(js, 'babel');
