@@ -1,6 +1,6 @@
 {
   "name": "@ejhammond/jskit",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "EJ Hammond <ejhammond@hey.com>",
   "description": "Common configurations for js/ts projects",
   "repository": "https://github.com/ejhammond/jskit",
