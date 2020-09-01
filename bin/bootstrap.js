@@ -3,6 +3,29 @@
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
+const { format } = require('prettier');
+const prettierConfig = require('../configs/prettier');
+
+function formatWithParser(content, parser) {
+  return format(content, { ...prettierConfig, parser: '' });
+}
+function formatJS(js) {
+  return formatWithParser(js, 'babel');
+}
+
+function formatYML(yml) {
+  return formatWithParser(yml, 'yaml');
+}
+
+function formatJSON(json) {
+  return formatWithParser(json, 'json-stringify');
+}
+
+function formatINI(ini) {
+  // prettier doesn't support formatting .ini files yet, so we'll do a basic formatting
+  // removes any leading whitespace and ensures that there's exactly one trailing newline
+  return ini.trim() + '\n';
+}
 
 function createFile(fileName, content) {
   return new Promise((resolve, reject) => {
@@ -51,7 +74,7 @@ function addPackageJSONScript(scriptName, script) {
 async function eslint() {
   await createFile(
     './.eslintrc.js',
-    "module.exports = { extends: ['@ejhammond/react', '@ejhammond/node'] }",
+    formatJS("module.exports = { extends: ['@ejhammond/react', '@ejhammond/node'] };"),
   );
 
   addPackageJSONScript('lint', 'jskit-lint');
@@ -60,7 +83,7 @@ async function eslint() {
 async function prettier() {
   await createFile(
     './.prettierrc.js',
-    "module.exports = require('@ejhammond/jskit/configs/prettier')",
+    formatJS("module.exports = require('@ejhammond/jskit/configs/prettier');"),
   );
 
   addPackageJSONScript('format', 'jskit-format');
@@ -69,7 +92,7 @@ async function prettier() {
 async function editorConfig() {
   return createFile(
     './.editorconfig',
-    `
+    formatINI(`
 root = true
 
 [*]
@@ -79,19 +102,22 @@ indent_size = 2
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-    `,
+    `),
   );
 }
 
 async function lintStaged() {
   return createFile(
     './lint-staged.config.js',
-    "module.exports = require('@ejhammond/jskit/configs/lint-staged')",
+    formatJS("module.exports = require('@ejhammond/jskit/configs/lint-staged');"),
   );
 }
 
 async function husky() {
-  return createFile('./.huskyrc.js', "module.exports = require('@ejhammond/jskit/configs/husky')");
+  return createFile(
+    './.huskyrc.js',
+    formatJS("module.exports = require('@ejhammond/jskit/configs/husky');"),
+  );
 }
 
 async function semanticRelease() {
@@ -102,7 +128,7 @@ async function semanticRelease() {
     ),
     createFile(
       './.circleci/config.yml',
-      `
+      formatYML(`
 version: 2
 jobs:
   release:
@@ -123,7 +149,7 @@ workflows:
           filters:
             branches:
               only: master
-        `,
+        `),
     ),
   ]);
 
@@ -133,14 +159,14 @@ workflows:
 async function commitlint() {
   return createFile(
     './commitlint.config.js',
-    "module.exports = require('@ejhammond/jskit/configs/commitlint')",
+    formatJS("module.exports = require('@ejhammond/jskit/configs/commitlint');"),
   );
 }
 
 async function dependabot() {
   return createFile(
     './.dependabot/config.yml',
-    `
+    formatYML(`
 version: 1
 update_configs:
   - package_manager: 'javascript'
@@ -148,7 +174,7 @@ update_configs:
     update_schedule: 'daily'
     commit_message:
       prefix: 'Fix'
-  `,
+  `),
   );
 }
 
@@ -162,7 +188,7 @@ async function bootstrap() {
   await commitlint();
   await dependabot();
 
-  fs.writeFileSync('./package.json', JSON.stringify(packageJSON), { encoding: 'utf8' });
+  fs.writeFileSync('./package.json', formatJSON(JSON.stringify(packageJSON)), { encoding: 'utf8' });
 }
 
 bootstrap();
