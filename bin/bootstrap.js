@@ -128,6 +128,21 @@ workflows:
   addPackageJSONScript('release', 'jskit-release');
 }
 
+async function dependabot() {
+  return createFile(
+    './.dependabot/config.yml',
+    `
+version: 1
+update_configs:
+  - package_manager: 'javascript'
+    directory: '/'
+    update_schedule: 'daily'
+    commit_message:
+      prefix: 'Fix'
+  `,
+  );
+}
+
 async function bootstrap() {
   await eslint();
   await prettier();
@@ -135,6 +150,7 @@ async function bootstrap() {
   await husky();
   await semanticRelease();
   await editorConfig();
+  await dependabot();
 
   fs.writeFileSync('./package.json', JSON.stringify(packageJSON), { encoding: 'utf8' });
 }
