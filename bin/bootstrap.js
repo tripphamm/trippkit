@@ -130,6 +130,13 @@ workflows:
   addPackageJSONScript('release', 'jskit-release');
 }
 
+async function commitlint() {
+  return createFile(
+    './commitlint.config.js',
+    "module.exports = require('@ejhammond/jskit/configs/commitlint')",
+  );
+}
+
 async function dependabot() {
   return createFile(
     './.dependabot/config.yml',
@@ -152,6 +159,7 @@ async function bootstrap() {
   await husky();
   await semanticRelease();
   await editorConfig();
+  await commitlint();
   await dependabot();
 
   fs.writeFileSync('./package.json', JSON.stringify(packageJSON), { encoding: 'utf8' });
