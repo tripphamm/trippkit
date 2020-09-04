@@ -74,7 +74,9 @@ function addPackageJSONScript(scriptName, script) {
 async function eslint() {
   await createFile(
     './.eslintrc.js',
-    formatJS("module.exports = { extends: ['@ejhammond/react', '@ejhammond/node'] };"),
+    formatJS(
+      "module.exports = { extends: ['plugin:@ejhammond/react', 'plugin:@ejhammond/node'] };",
+    ),
   );
 
   addPackageJSONScript('lint', 'jskit-lint');
