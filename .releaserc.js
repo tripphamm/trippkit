@@ -1,1 +1,1 @@
-module.exports = require('./configs/semantic-release');
+module.exports = require('./configs/library/semantic-release');

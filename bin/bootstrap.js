@@ -4,7 +4,8 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const { format } = require('prettier');
-const prettierConfig = require('../configs/prettier');
+const prompts = require('prompts');
+const prettierConfig = require('../configs/shared/prettier');
 
 function formatWithParser(content, parser) {
   return format(content, { ...prettierConfig, parser });
@@ -65,18 +66,33 @@ function addPackageJSONScript(scriptName, script) {
   }
 
   if (packageJSON.scripts[scriptName] !== undefined) {
+    console.log(
+      `JSKit encountered a conflict when trying to create a package.json script with the content: "${scriptName}": "${script}"`,
+    );
     return;
   }
 
   packageJSON.scripts[scriptName] = script;
 }
 
-async function eslint() {
+async function eslint({ frameworks }) {
+  const pluginMap = {
+    react: 'plugin:@ejhammond/react',
+    node: 'plugin:@ejhammond/node',
+  };
+
+  const plugins = frameworks.map((fw) => pluginMap[fw]);
+
+  // each of the framework plugins inherits from the base
+  // if we don't include any frameworks, that's fine
+  // but we must explicitly add the base config in that case
+  if (plugins.length === 0) {
+    plugins.push('plugin:@ejhammond/base');
+  }
+
   await createFile(
     './.eslintrc.js',
-    formatJS(
-      "module.exports = { extends: ['plugin:@ejhammond/react', 'plugin:@ejhammond/node'] };",
-    ),
+    formatJS(`module.exports = { extends: [ ${plugins.map((p) => `"${p}"`).join(', ')} ] };`),
   );
 
   addPackageJSONScript('lint', 'jskit-lint');
@@ -85,7 +101,7 @@ async function eslint() {
 async function prettier() {
   await createFile(
     './.prettierrc.js',
-    formatJS("module.exports = require('@ejhammond/jskit/configs/prettier');"),
+    formatJS("module.exports = require('@ejhammond/jskit/configs/shared/prettier');"),
   );
 
   addPackageJSONScript('format', 'jskit-format');
@@ -111,22 +127,36 @@ trim_trailing_whitespace = true
 async function lintStaged() {
   return createFile(
     './lint-staged.config.js',
-    formatJS("module.exports = require('@ejhammond/jskit/configs/lint-staged');"),
+    formatJS("module.exports = require('@ejhammond/jskit/configs/shared/lint-staged');"),
   );
 }
 
-async function husky() {
+async function husky({ projectType }) {
   return createFile(
     './.huskyrc.js',
-    formatJS("module.exports = require('@ejhammond/jskit/configs/husky');"),
+    formatJS(`module.exports = require('@ejhammond/jskit/configs/${projectType}/husky');`),
   );
 }
 
-async function semanticRelease() {
+async function semanticRelease({
+  projectType,
+  hasBuildCommand,
+  hasTestCommand,
+  buildCommand,
+  testCommand,
+}) {
+  if (projectType !== 'library') {
+    return;
+  }
+
   await Promise.all([
     createFile(
+      './commitlint.config.js',
+      formatJS("module.exports = require('@ejhammond/jskit/configs/library/commitlint');"),
+    ),
+    createFile(
       './.releaserc.js',
-      "module.exports = require('@ejhammond/jskit/configs/semantic-release')",
+      "module.exports = require('@ejhammond/jskit/configs/library/semantic-release')",
     ),
     createFile(
       './.circleci/config.yml',
@@ -141,6 +171,8 @@ jobs:
     steps:
       - checkout
       - run: yarn install
+      ${hasBuildCommand ? `- run: yarn ${buildCommand}` : ''}
+      ${hasTestCommand ? `- run: yarn ${testCommand}` : ''}
       - run: yarn release
 workflows:
   version: 2
@@ -153,42 +185,93 @@ workflows:
               only: master
         `),
     ),
+    createFile(
+      './.dependabot/config.yml',
+      formatYML(`
+  version: 1
+  update_configs:
+    - package_manager: 'javascript'
+      directory: '/'
+      update_schedule: 'daily'
+      commit_message:
+        prefix: 'Fix'
+    `),
+    ),
   ]);
 
   addPackageJSONScript('release', 'jskit-release');
 }
 
-async function commitlint() {
-  return createFile(
-    './commitlint.config.js',
-    formatJS("module.exports = require('@ejhammond/jskit/configs/commitlint');"),
-  );
-}
-
-async function dependabot() {
-  return createFile(
-    './.dependabot/config.yml',
-    formatYML(`
-version: 1
-update_configs:
-  - package_manager: 'javascript'
-    directory: '/'
-    update_schedule: 'daily'
-    commit_message:
-      prefix: 'Fix'
-  `),
-  );
+function onlyIfLibrary(type) {
+  return (_, { projectType }) => (projectType === 'library' ? type : null);
 }
 
 async function bootstrap() {
-  await eslint();
+  const questions = [
+    {
+      name: 'projectType',
+      type: 'select',
+      message: 'What type of project is this?',
+      choices: [
+        {
+          title: 'Library',
+          description: 'Distributed via NPM [includes Semantic Release and CircleCI]',
+          value: 'library',
+        },
+        { title: 'App', description: 'Published as a webiste or service', value: 'app' },
+      ],
+    },
+    {
+      name: 'hasBuildCommand',
+      type: onlyIfLibrary('confirm'),
+      message: 'Does the library have a build step?',
+    },
+    {
+      name: 'buildCommand',
+      // only ask this if this is a library and it has a build command
+      type: (_, { hasBuildCommand, projectType }) =>
+        hasBuildCommand === true && projectType === 'library' ? 'text' : null,
+      message: 'What yarn command will build your library?',
+      initial: 'build',
+      validate: (input) =>
+        !/\s/.test(input) || 'Input should be the name of a yarn script e.g. "build"',
+    },
+    {
+      name: 'hasTestCommand',
+      type: onlyIfLibrary('confirm'),
+      message: 'Does the library have a test step?',
+    },
+    {
+      name: 'testCommand',
+      // only ask this if this is a library and it has a test command
+      type: (_, { hasTestCommand, projectType }) =>
+        hasTestCommand === true && projectType === 'library' ? 'text' : null,
+      message: 'What yarn command will test your library?',
+      initial: 'test',
+      validate: (input) =>
+        !/\s/.test(input) || 'Input should be the name of a yarn script e.g. "test"',
+    },
+    {
+      name: 'frameworks',
+      type: 'multiselect',
+      message: 'What frameworks are you using?',
+      choices: [
+        { title: 'Node', value: 'node', description: 'e.g. terminal script or Express service' },
+        { title: 'React', value: 'react', description: 'e.g. a web-app or component library' },
+      ],
+      instructions: false,
+      hint: '- Use <Space> to select and <Enter> to submit',
+    },
+  ];
+
+  const config = await prompts(questions, { onCancel: () => process.exit(0) });
+
+  await eslint({ frameworks: config.frameworks });
+  await editorConfig();
   await prettier();
   await lintStaged();
   await husky();
-  await semanticRelease();
-  await editorConfig();
-  await commitlint();
-  await dependabot();
+  await semanticRelease({ projectType: config.projectType });
 
   fs.writeFileSync('./package.json', formatJSON(JSON.stringify(packageJSON)), { encoding: 'utf8' });
 }

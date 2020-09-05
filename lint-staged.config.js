@@ -1,1 +1,1 @@
-module.exports = require('./configs/lint-staged');
+module.exports = require('./configs/shared/lint-staged');
