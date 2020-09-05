@@ -149,6 +149,14 @@ async function semanticRelease({
     return;
   }
 
+  const ciSteps = [
+    'checkout',
+    'run: yarn install',
+    hasBuildCommand ? `run: yarn ${buildCommand}` : null,
+    hasTestCommand ? `run: yarn ${testCommand}` : null,
+    'run: yarn release',
+  ].filter(Boolean);
+
   await Promise.all([
     createFile(
       './commitlint.config.js',
@@ -167,13 +175,8 @@ jobs:
     docker:
       - image: circleci/node:10.15
     working_directory: ~/repo
-
     steps:
-      - checkout
-      - run: yarn install
-      ${hasBuildCommand ? `- run: yarn ${buildCommand}` : ''}
-      ${hasTestCommand ? `- run: yarn ${testCommand}` : ''}
-      - run: yarn release
+${ciSteps.map((s) => `      - ${s}`).join('\n')}
 workflows:
   version: 2
   release-workflow:
