@@ -266,12 +266,12 @@ async function bootstrap() {
 
   const config = await prompts(questions, { onCancel: () => process.exit(0) });
 
-  await eslint({ frameworks: config.frameworks });
-  await editorConfig();
-  await prettier();
-  await lintStaged();
-  await husky();
-  await semanticRelease({ projectType: config.projectType });
+  await eslint(config);
+  await editorConfig(config);
+  await prettier(config);
+  await lintStaged(config);
+  await husky(config);
+  await semanticRelease(config);
 
   fs.writeFileSync('./package.json', formatJSON(JSON.stringify(packageJSON)), { encoding: 'utf8' });
 }

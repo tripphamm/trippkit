@@ -241,4 +241,8 @@ The `bootstrap` process will add a script called `release` in your package.json.
 
 #### CircleCI
 
-In order to build and release our library when we push changes, we utilize CircleCI.
+In order to build and release our library when we push changes, we utilize CircleCI. JSKit will generate a `.circleci/config.yml` file which will install, build, test, and release your library every time a change is pushed to the `master` branch.
+
+#### Dependabot
+
+GitHub's Dependabot will scan your library for vulnerable dependencies and will open Pull Requests in order to update those dependencies. In order to ensure that Dependabot follows our commit-message convention, JSKit includes a `.dependabot` config which tells Dependabot to prefix its commit messages with "Fix".
