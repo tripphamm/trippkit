@@ -24,9 +24,14 @@
     "lint": "node ./bin/lint.js",
     "release": "node ./bin/release.js"
   },
+  "devDependencies": {
+    "@ejhammond/eslint-plugin": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@ejhammond/eslint-plugin": "^1.0.0"
+  },
   "dependencies": {
     "@commitlint/cli": "^9.1.2",
-    "@ejhammond/eslint-plugin": "^1.0.0",
     "@semantic-release/commit-analyzer": "^6.3.3",
     "@semantic-release/git": "^7.0.18",
     "@semantic-release/github": "^5.5.5",
