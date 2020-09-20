@@ -25,10 +25,10 @@
     "release": "node ./bin/release.js"
   },
   "devDependencies": {
-    "@ejhammond/eslint-plugin": "^1.0.0"
+    "@ejhammond/eslint-plugin": "^1.0.1"
   },
   "peerDependencies": {
-    "@ejhammond/eslint-plugin": "^1.0.0"
+    "@ejhammond/eslint-plugin": "^1.0.1"
   },
   "dependencies": {
     "@commitlint/cli": "^9.1.2",
