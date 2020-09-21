@@ -6,7 +6,7 @@ module.exports = {
   /**
    * Merges any env vars defined in the root .env file with the env vars in process.env
    */
-  read: function() {
+  read: function () {
     const dotEnvFileLocation = './.env';
 
     const dotEnvFileExists = fs.existsSync(dotEnvFileLocation);
@@ -35,7 +35,7 @@ ${chalk.red(dotEnvResult.error)}
   /**
    * Checks that the provided `env` contains each of the required env vars and kills the process (with an error message) if any are missing
    */
-  validate: function(env, requiredEnvVars) {
+  validate: function (env, requiredEnvVars) {
     const missingEnvVars = requiredEnvVars.filter((envVarName) => env[envVarName] === undefined);
 
     if (missingEnvVars.length > 0) {
