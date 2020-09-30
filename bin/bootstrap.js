@@ -189,15 +189,16 @@ workflows:
         `),
     ),
     createFile(
-      './.dependabot/config.yml',
+      './.github/dependabot.yml',
       formatYML(`
-  version: 1
-  update_configs:
-    - package_manager: 'javascript'
-      directory: '/'
-      update_schedule: 'daily'
-      commit_message:
-        prefix: 'Fix'
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "Fix"
     `),
     ),
   ]);
